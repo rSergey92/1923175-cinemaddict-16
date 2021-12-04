@@ -1,13 +1,23 @@
+export const GENRES = ['Musical', 'Western', 'Cartoon', 'Comedy'];
+
 export const FILM_TITLE = [
-  'The Dance of Life',
+  'Made for Each Other',
+  'Popeye meets Sinbad',
   'Sagebrush Trail',
+  'Santa Claus Conquers the Martians',
+  'The Dance of Life',
   'The Man with the Golden Arm',
+  'The Great Flamarion',
 ];
 
-export const FILM_POSTERS = [
-  'the-dance-of-life.jpg',
+export const POSTERS = [
+  'made-for-each-other.png',
+  'popeye-meets-sinbad.png',
   'sagebrush-trail.jpg',
+  'santa-claus-conquers-the-martians.jpg',
+  'the-dance-of-life.jpg',
   'the-man-with-the-golden-arm.jpg',
+  'the-great-flamarion.jpg'
 ];
 
 export const FILM_DESCRIPTION = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -21,3 +31,12 @@ Sed sed nisi sed augue convallis suscipit in sed felis.
 Aliquam erat volutpat.
 Nunc fermentum tortor ac porta dapibus.
 In rutrum ac purus sit amet tempus.`;
+
+export const COMMENT_TEXT = [
+  'Interesting setting and a good cast',
+  'Booooooooooring',
+  'Very very old. Meh',
+  'Almost two hours? Seriously?',
+];
+
+export const EMOJI = ['smile', 'sleeping', 'puke', 'angry'];
