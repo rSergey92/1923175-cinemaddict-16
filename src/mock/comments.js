@@ -1,10 +1,10 @@
 import { getRandomInteger, countDate, randomDate } from '../utils';
-import { EMOJI, COMMENT_TEXT } from '../const';
+import { EMOJI, COMMENT_TEXT, AUTHOR } from '../const';
 
 const generateText = () => {
   const randomIndex = getRandomInteger(0, COMMENT_TEXT.length - 1);
 
-  return EMOJI[randomIndex];
+  return COMMENT_TEXT[randomIndex];
 };
 
 const generateEmoji = () => {
@@ -12,7 +12,11 @@ const generateEmoji = () => {
 
   return EMOJI[randomIndex];
 };
-const generateAuthor = () => {};
+const generateAuthor = () => {
+  const randomIndex = getRandomInteger(0, AUTHOR.length - 1);
+
+  return AUTHOR[randomIndex];
+};
 
 const generateDay = () => countDate(randomDate('01.01.1970', new Date())) === 0
   ? 'Today'
@@ -21,9 +25,9 @@ const generateDay = () => countDate(randomDate('01.01.1970', new Date())) === 0
 export const generateComments = () => ({
   count: 4,
   emoji: `/images/emoji/${generateEmoji()}.png`,
-  text: 'Interesting setting and a good cast',
+  text: generateText(),
   info: {
-    author: 'Tim Macoveev',
+    author: generateAuthor(),
     day: generateDay()
   }
 });

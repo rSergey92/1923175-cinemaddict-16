@@ -39,4 +39,9 @@ export const COMMENT_TEXT = [
   'Almost two hours? Seriously?',
 ];
 
+export const AUTHOR = [
+  'Tim Macoveev',
+  'Joe',
+];
+
 export const EMOJI = ['smile', 'sleeping', 'puke', 'angry'];

@@ -45,7 +45,7 @@ if (films.length > FILM_COUNT_PER_STEP) {
       evt.preventDefault();
       films
         .slice(rerenderFilmCount, rerenderFilmCount + FILM_COUNT_PER_STEP)
-        .forEach((film) => renderTemplate(filmsListContainerElement, createMovieCardTemplate(film), RenderPosition.BEFOREEND))
+        .forEach((film) => renderTemplate(filmsListContainerElement, createMovieCardTemplate(film), RenderPosition.BEFOREEND));
     });
 
     rerenderFilmCount += FILM_COUNT_PER_STEP;
@@ -54,12 +54,4 @@ if (films.length > FILM_COUNT_PER_STEP) {
       loadMoreButton.remove();
     }
   }
-}
-
-const buttonCard = document.querySelectorAll('.film-card__link');
-
-if (buttonCard) {
-  buttonCard.forEach((btn) => btn.addEventListener('click', ({ currentTarget }) => {
-    console.log(currentTarget);
-  }));
 }
