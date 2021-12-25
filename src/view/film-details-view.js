@@ -1,8 +1,10 @@
+import { createElement } from '../render';
+
 const createMovieGenre = (geners) => (
   geners ? geners.split(' ').map((genre) => `<span class="film-details__genre">${genre}</span>`).join('') : ''
 );
 
-export const createFilmDetailsTemplate = (film, comments) => (
+const createFilmDetailsTemplate = (film, comments) => (
   `<form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -131,3 +133,30 @@ export const createFilmDetailsTemplate = (film, comments) => (
     </div>
   </form>`
 );
+
+export default class FilmDetailsView {
+  #element = null;
+  #film = null;
+  #comments = null;
+
+  constructor(film, comments) {
+    this.#film = film;
+    this.#comments = comments;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createFilmDetailsTemplate(this.#film, this.#comments);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
