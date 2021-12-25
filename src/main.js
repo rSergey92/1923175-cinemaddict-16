@@ -29,10 +29,6 @@ for (let i = 0; i < Math.min(films.length, FILM_COUNT_PER_STEP); i++) {
   renderTemplate(filmsListContainerElement, createMovieCardTemplate(films[i]), RenderPosition.BEFOREEND);
 }
 
-const filmDetailsElement = document.querySelector('.film-details');
-
-renderTemplate(filmDetailsElement, createFilmDetailsTemplate(films[0], generateComments()), RenderPosition.BEFOREEND);
-
 if (films.length > FILM_COUNT_PER_STEP) {
   let rerenderFilmCount = FILM_COUNT_PER_STEP;
 
