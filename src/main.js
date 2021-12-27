@@ -16,9 +16,33 @@ const films = Array.from({length: FILMS_COUNT}, generateFilm);
 const headerElement = document.querySelector('.header');
 const siteMainElement = document.querySelector('.main');
 const siteHeaderElement = siteMainElement.querySelector('.main__control');
+const filmDetails = document.querySelector('.film-details');
 
 const renderFilm = (filmListElement, film) => {
   const filmComponent = new MovieCardView(film);
+
+  const openPopup = (filmObject) => {
+    const filmPopupComponent = new FilmDetailsView(filmObject, generateComments());
+    document.body.classList.add('hide-overflow');
+    render(filmDetails, filmPopupComponent.element, RenderPosition.BEFOREEND);
+
+    const closePopup = () => {
+      document.body.classList.remove('hide-overflow');
+      filmDetails.removeChild(filmPopupComponent.element);
+
+      filmPopupComponent.element.querySelector('.film-details__close-btn')
+        .removeEventListener('click', closePopup);
+
+      filmComponent.element.querySelector('.film-card__link')
+        .removeEventListener('click', () => openPopup(film));
+    };
+
+    filmPopupComponent.element.querySelector('.film-details__close-btn')
+      .addEventListener('click', closePopup);
+  };
+
+  filmComponent.element.querySelector('.film-card__link')
+    .addEventListener('click', () => openPopup(film));
 
   render(filmListElement, filmComponent.element, RenderPosition.BEFOREEND);
 };
