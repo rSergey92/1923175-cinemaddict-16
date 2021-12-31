@@ -1,4 +1,6 @@
-export const createMovieCardTemplate = (film) => (
+import { createElement } from '../render';
+
+const createMovieCardTemplate = (film) => (
   `<aticle class="film-card">
           <a class="film-card__link">
             <h3 class="film-card__title">${film.filmInfo.title}</h3>
@@ -20,3 +22,28 @@ export const createMovieCardTemplate = (film) => (
         </article>
   `
 );
+
+export default class MovieCardView {
+  #element = null;
+  #film = null;
+
+  constructor(film) {
+    this.#film = film;
+  }
+
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
+    }
+
+    return this.#element;
+  }
+
+  get template() {
+    return createMovieCardTemplate(this.#film);
+  }
+
+  removeElement() {
+    this.#element = null;
+  }
+}
