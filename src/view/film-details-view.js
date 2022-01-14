@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from './abstract-view';
 
 const createMovieGenre = (geners) => (
   geners ? geners.split(' ').map((genre) => `<span class="film-details__genre">${genre}</span>`).join('') : ''
@@ -134,29 +134,28 @@ const createFilmDetailsTemplate = (film, comments) => (
   </form>`
 );
 
-export default class FilmDetailsView {
-  #element = null;
+export default class FilmDetailsView extends AbstractView {
   #film = null;
   #comments = null;
 
   constructor(film, comments) {
+    super();
+
     this.#film = film;
     this.#comments = comments;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
   }
 
   get template() {
     return createFilmDetailsTemplate(this.#film, this.#comments);
   }
 
-  removeElement() {
-    this.#element = null;
+  setEditClickHandler = (callback) => {
+    this._callback.editClick = callback;
+    this.element.querySelector('.film-details__close-btn').addEventListener('click', this.#editClickHandler);
+  }
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 }
