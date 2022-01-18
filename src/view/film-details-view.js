@@ -5,7 +5,9 @@ const createMovieGenre = (geners) => (
 );
 
 const createFilmDetailsTemplate = (film, comments) => (
-  `<form class="film-details__inner" action="" method="get">
+  `
+<section class="film-details">
+<form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
         <button class="film-details__close-btn" type="button">close</button>
@@ -131,7 +133,8 @@ const createFilmDetailsTemplate = (film, comments) => (
         </div>
       </section>
     </div>
-  </form>`
+  </form>
+</section>`
 );
 
 export default class FilmDetailsView extends AbstractView {
