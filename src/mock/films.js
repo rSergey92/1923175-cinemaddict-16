@@ -5,6 +5,7 @@ import {
   POSTERS,
   GENRES,
 } from '../const';
+import { nanoid } from 'nanoid';
 
 import {
   getRandomInteger,
@@ -41,6 +42,7 @@ export const generateFilm = () => {
   const title = generateTitle();
 
   return {
+    id: nanoid(),
     comments: generateCountComments(),
     filmInfo: {
       title,

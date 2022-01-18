@@ -5,28 +5,36 @@ import { render, RenderPosition } from '../render';
 import { replace, remove } from '../utils.js';
 
 export default class MovieCardPresenter {
+  #changeData = null;
   #filmCardComponent = null;
   #filmPopupComponent = null;
-  #film = null;
   #filmsListContainer = null;
   #filmDetails = null;
   #mainContainer = null
 
-  constructor(filmsListContainer, film) {
+  #film = null;
+
+  constructor(filmsListContainer, changeData) {
+    this.#changeData = changeData;
     this.#filmsListContainer = filmsListContainer;
-    this.#film = film;
     this.#mainContainer = document.querySelector('.main');
     this.#filmDetails = document.querySelector('.film-details');
   }
 
-  init = () => {
+  init = (film) => {
+    this.#film = film;
+
     const prevfilmCardComponent = this.#filmCardComponent;
     const prevPopupComponent = this.#filmPopupComponent;
 
-    this.#filmCardComponent = new MovieCardView(this.#film);
-    this.#filmPopupComponent = new FilmDetailsView(this.#film, generateComments());
+    this.#filmCardComponent = new MovieCardView(film);
+    this.#filmPopupComponent = new FilmDetailsView(film, generateComments());
 
     this.#filmCardComponent.setClickHandler(this.#handleFilmCardClick);
+    this.#filmCardComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
+    this.#filmCardComponent.setWatchedClickHandler(this.#handleWatchedClick);
+    this.#filmCardComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+
     this.#filmPopupComponent.setEditClickHandler(this.#handleCloseButtonClick);
 
     if (prevfilmCardComponent === null || prevPopupComponent === null) {
@@ -88,15 +96,15 @@ export default class MovieCardPresenter {
     document.removeEventListener('keydown', this.#onEscKeyDown);
   }
 
-  #watchListClick = () => {
-    console.log('watchListClick');
+  #handleWatchlistClick = () => {
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isWatchlist: !this.#film.userDetails.isWatchlist}});
   }
 
-  #watchedClick = () => {
-    console.log('watchedClick');
+  #handleWatchedClick = () => {
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isWatched: !this.#film.userDetails.isWatched}});
   }
 
-  #favoriteClick = () => {
-    console.log('stop');
+  #handleFavoriteClick = () => {
+    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isFavorite: !this.#film.userDetails.isFavorite}});
   }
 }

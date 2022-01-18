@@ -5,7 +5,7 @@ import FilmListView from '../view/films-list-view';
 import EmptyListView from '../view/empty-list-view.js';
 import SortView from '../view/sort-view.js';
 import { render, RenderPosition } from '../render';
-import { remove } from '../utils';
+import { remove, updateItem } from '../utils';
 import MovieCardPresenter from './movie-card-presenter';
 
 const FILM_COUNT_PER_STEP = 5;
@@ -24,6 +24,7 @@ export default class MovieListPresenter {
   #siteHeaderElement = null;
 
   #rerenderFilmCount = FILM_COUNT_PER_STEP;
+  #filmPresenter = new Map();
 
   constructor(films) {
     this.#films = [...films];
@@ -52,10 +53,14 @@ export default class MovieListPresenter {
   }
 
   #renderCardFilm = (film) => {
-    new MovieCardPresenter(
+    const filmPresenter = new MovieCardPresenter(
       this.#filmListComponent.element.querySelector('.films-list__container'),
-      film,
-    ).init();
+      this.#handleFilmChange
+    );
+
+    filmPresenter.init(film);
+
+    this.#filmPresenter.set(film.id, filmPresenter);
   }
 
   #renderBoard = () => {
@@ -99,5 +104,17 @@ export default class MovieListPresenter {
   #renderLoadMoreButton = () => {
     render(this.#siteMainElement, this.#loadMoreButton.element, RenderPosition.BEFOREEND);
     this.#loadMoreButton.setClickHandler(() => this.#handleLoadMoreButtonClick());
+  }
+
+  #clearFilmList = () => {
+    this.#filmPresenter.forEach((presenter) => presenter.destroy());
+    this.#filmPresenter.clear();
+    this.#rerenderFilmCount = FILM_COUNT_PER_STEP;
+    remove(this.#loadMoreButton);
+  }
+
+  #handleFilmChange = (updatedFilm) => {
+    this.#films = updateItem(this.#films, updatedFilm);
+    this.#filmPresenter.get(updatedFilm.id).init(updatedFilm);
   }
 }
