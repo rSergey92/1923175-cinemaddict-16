@@ -45,3 +45,9 @@ export const AUTHOR = [
 ];
 
 export const EMOJI = ['smile', 'sleeping', 'puke', 'angry'];
+
+export const SortType = {
+  DEFAULT: 'default',
+  DATE: 'date',
+  RATING: 'rating'
+};
