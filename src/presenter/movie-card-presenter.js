@@ -34,8 +34,7 @@ export default class MovieCardPresenter {
     this.#filmCardComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
     this.#filmCardComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#filmCardComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
-
-    this.#filmPopupComponent.setEditClickHandler(this.#handleCloseButtonClick);
+    this.#filmPopupComponent.setCloseClickHandler(this.#handleCloseButtonClick);
 
     if (prevfilmCardComponent === null || prevPopupComponent === null) {
       render(this.#filmsListContainer, this.#filmCardComponent.element, RenderPosition.BEFOREEND);
@@ -49,6 +48,7 @@ export default class MovieCardPresenter {
     if (document.body.contains(prevPopupComponent.element)) {
       replace(this.#filmPopupComponent, prevPopupComponent);
     }
+
     remove(prevfilmCardComponent);
     remove(prevPopupComponent);
     render(this.#filmsListContainer, this.#filmCardComponent, RenderPosition.BEFOREEND);
