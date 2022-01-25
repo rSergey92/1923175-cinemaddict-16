@@ -74,4 +74,8 @@ export default class MovieCardView extends AbstractView {
     evt.stopPropagation();
     this._callback.favoriteClick();
   }
+
+  reset = (film) => {
+    this.updateData({...film});
+  }
 }

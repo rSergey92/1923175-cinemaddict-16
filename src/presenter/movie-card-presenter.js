@@ -3,6 +3,7 @@ import FilmDetailsView from '../view/film-details-view';
 import { generateComments } from '../mock/comments';
 import { render, RenderPosition } from '../render';
 import { replace, remove } from '../utils.js';
+import { UpdateType, FilterTypes } from '../const';
 
 export default class MovieCardPresenter {
   #changeData = null;
@@ -11,12 +12,14 @@ export default class MovieCardPresenter {
   #filmsListContainer = null;
   #filmDetails = null;
   #mainContainer = null
+  #changeMode = null;
 
   #film = null;
 
-  constructor(filmsListContainer, changeData) {
+  constructor(filmsListContainer, changeData, changeMode) {
     this.#changeData = changeData;
     this.#filmsListContainer = filmsListContainer;
+    this.#changeMode = changeMode;
     this.#mainContainer = document.querySelector('.main');
     this.#filmDetails = document.querySelector('.film-details');
   }
@@ -34,7 +37,12 @@ export default class MovieCardPresenter {
     this.#filmCardComponent.setWatchlistClickHandler(this.#handleWatchlistClick);
     this.#filmCardComponent.setWatchedClickHandler(this.#handleWatchedClick);
     this.#filmCardComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
+
     this.#filmPopupComponent.setCloseClickHandler(this.#handleCloseButtonClick);
+    this.#filmPopupComponent.setFavoriteClickHandler(this.#handleIsAddedToFavorite);
+    this.#filmPopupComponent.setWatchedClickHandler(this.#handleIsWatched);
+    this.#filmPopupComponent.setWatchingListClickHandler(this.#handleIsAddedToWatchList);
+    this.#filmPopupComponent.setDeleteCommentButtonClickHandler(this.#handleDeleteCommentClick);
 
     if (prevfilmCardComponent === null || prevPopupComponent === null) {
       render(this.#filmsListContainer, this.#filmCardComponent.element, RenderPosition.BEFOREEND);
@@ -54,6 +62,10 @@ export default class MovieCardPresenter {
     render(this.#filmsListContainer, this.#filmCardComponent, RenderPosition.BEFOREEND);
   }
 
+  resetView = () => {
+    this.#filmCardComponent.reset(this.#film);
+  }
+
   destroy = () => {
     remove(this.#filmCardComponent);
     remove(this.#filmPopupComponent);
@@ -62,6 +74,7 @@ export default class MovieCardPresenter {
   #showCardPopup = () => {
     this.#closePreviousPopup();
     document.body.classList.add('hide-overflow');
+    this.#filmPopupComponent.setSubmitFormClickHandler(this.#handleSubmitComment);
     render(this.#mainContainer, this.#filmPopupComponent.element, RenderPosition.BEFOREEND);
   }
 
@@ -97,14 +110,84 @@ export default class MovieCardPresenter {
   }
 
   #handleWatchlistClick = () => {
-    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isWatchlist: !this.#film.userDetails.isWatchlist}});
+    this.#changeData(
+      FilterTypes.WATCHLIST,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        userDetails: {
+          ...this.#film.userDetails,
+          isWatchlist: !this.#film.userDetails.isWatchlist
+        }
+      });
   }
 
   #handleWatchedClick = () => {
-    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isWatched: !this.#film.userDetails.isWatched}});
+    this.#changeData(
+      FilterTypes.WATCHED,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        userDetails: {
+          ...this.#film.userDetails,
+          isWatched: !this.#film.userDetails.isWatched,
+        }
+      });
   }
 
+  #handleIsAddedToFavorite = () => {
+    this.#changeData(
+      FilterTypes.FAVORITES,
+      UpdateType.MINOR,
+      {...this.#film, isAddedToFavorite: !this.#film.isAddedToFavorite});
+  };
+
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#film, userDetails: {...this.#film.userDetails, isFavorite: !this.#film.userDetails.isFavorite}});
+    this.#changeData(
+      FilterTypes.FAVORITES,
+      UpdateType.MINOR,
+      {
+        ...this.#film,
+        userDetails: {
+          ...this.#film.userDetails,
+          isFavorite: !this.#film.userDetails.isFavorite
+        }
+      }
+    );
   }
+
+  #handleIsWatched = () => {
+    this.#changeData(
+      FilterTypes.WATCHED,
+      UpdateType.MINOR,
+      {...this.#film, isWatched: !this.#film.isWatched});
+  };
+
+  #handleIsAddedToWatchList = () => {
+    this.#changeData(
+      FilterTypes.WATCHLIST,
+      UpdateType.MINOR,
+      {...this.#film, isAddedToWatchList: !this.#film.isAddedToWatchList});
+  };
+
+  #handleDeleteCommentClick = (commentId) => {
+    this.#film.comments = this.#film.comments.filter((comment) => {
+      if (comment.id !== commentId) {
+        return true;
+      }
+    });
+
+    this.#changeData(
+      UpdateType.PATCH,
+      {...this.#film}
+    );
+  };
+
+  #handleSubmitComment = (newComment) => {
+    this.#film.comments = this.#film.comments.push(newComment);
+    this.#changeData(
+      FilterTypes.ALL,
+      UpdateType.PATCH,
+      {...this.#film});
+  };
 }

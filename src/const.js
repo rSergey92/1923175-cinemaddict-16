@@ -51,3 +51,16 @@ export const SortType = {
   DATE: 'date',
   RATING: 'rating'
 };
+
+export const FilterTypes = {
+  ALL: 'ALL',
+  FAVORITES: 'FAVORITES',
+  WATCHLIST: 'WATCHLIST',
+  WATCHED: 'WATCHED',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
