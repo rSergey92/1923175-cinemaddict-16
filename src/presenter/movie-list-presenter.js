@@ -169,7 +169,7 @@ export default class MovieListPresenter {
         this.#renderBoard();
         break;
       case UpdateType.MAJOR:
-        this.#renderCardFilm();
+        this.#clearBoard({resetRenderedMoviesCount: true, resetSortType: true});
         this.#renderBoard();
         break;
     }
